@@ -1,0 +1,43 @@
+# Maven
+**/target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# IntelliJ IDEA
+*.iml
+.idea/
+out/
+
+# NetBeans
+nbproject/private/
+build/
+dist/
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Maven Wrapper
+.mvn/wrapper/maven-wrapper.jar
+
+# Others
+*.swp
+*.swo
+
+# Ignore generated Maven wrapper files except the jar
+.mvn/wrapper/
+!/.mvn/wrapper/maven-wrapper.jar
+
+# Ignore Maven wrapper scripts if not needed
+# !/mvnw
+# !/mvnw.cmd
