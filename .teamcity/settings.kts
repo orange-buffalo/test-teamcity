@@ -1,7 +1,8 @@
-import jetbrains.buildServer.configs.kotlin.*
+import jetbrains.buildServer.configs.kotlin.BuildType
 import jetbrains.buildServer.configs.kotlin.buildSteps.script
+import jetbrains.buildServer.configs.kotlin.project
 import jetbrains.buildServer.configs.kotlin.triggers.vcs
-import jetbrains.buildServer.configs.kotlin.vcs.GitVcsRoot
+import jetbrains.buildServer.configs.kotlin.version
 
 /*
 The settings script is an entry point for defining a TeamCity
@@ -28,30 +29,28 @@ To debug in IntelliJ Idea, open the 'Maven Projects' tool window (View
 version = "2025.11"
 
 project {
+    buildType(MainBuild)
+}
 
-    buildType {
-        id("build_new")
-        name = "Build New"
+object MainBuild : BuildType({
+    id("build_new")
+    name = "Build New"
 
+    triggers {
         vcs {
-            root(AppVcs)
+            branchFilter = "+:*"
         }
+    }
 
-        triggers {
-            vcs {
-                branchFilter = "+:*"
-            }
-        }
+    requirements {
+        contains("teamcity.agent.jvm.os.name", "Linux")
+        matches("teamcity.agent.hardware.cpuCount", "1,2,4")
+    }
 
-        requirements {
-            contains("teamcity.agent.jvm.os.name", "Linux")
-            matches("teamcity.agent.hardware.cpuCount", "1,2,4")
-        }
-
-        steps {
-            script {
-                name = "Install SDKMAN and Initialize JDK"
-                scriptContent = """
+    steps {
+        script {
+            name = "Install SDKMAN and Initialize JDK"
+            scriptContent = """
                     #!/usr/bin/env bash
                     set -e
 
@@ -69,11 +68,11 @@ project {
 
                     java -version
                 """.trimIndent()
-            }
+        }
 
-            script {
-                name = "Run mvn install"
-                scriptContent = """
+        script {
+            name = "Run mvn install"
+            scriptContent = """
                     #!/usr/bin/env bash
                     set -e
 
@@ -83,16 +82,6 @@ project {
 
                     mvn install
                 """.trimIndent()
-            }
         }
     }
-}
-
-object AppVcs : GitVcsRoot({
-    id("AppVcs")
-    name = "Application VCS Root"
-    url = "https://github.com/%vcsRootUrl%"
-    branch = "refs/heads/main"
-    branchSpec = "+:refs/heads/*"
 })
-
