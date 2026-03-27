@@ -50,7 +50,7 @@ object MainBuild : BuildType({
 
     requirements {
         contains("teamcity.agent.jvm.os.name", "Linux")
-        matches("teamcity.agent.hardware.cpuCount", "1,2,4")
+        matches("teamcity.agent.hardware.cpuCount", "2")
     }
 
     steps {
