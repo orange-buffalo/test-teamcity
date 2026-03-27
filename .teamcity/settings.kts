@@ -1,5 +1,7 @@
 import jetbrains.buildServer.configs.kotlin.*
 import jetbrains.buildServer.configs.kotlin.buildSteps.script
+import jetbrains.buildServer.configs.kotlin.triggers.vcs
+import jetbrains.buildServer.configs.kotlin.vcs.GitVcsRoot
 
 /*
 The settings script is an entry point for defining a TeamCity
@@ -27,9 +29,26 @@ version = "2025.11"
 
 project {
 
+    vcsRoot(AppVcs)
+
     buildType {
         id("Build")
         name = "Build"
+
+        vcs {
+            root(AppVcs)
+        }
+
+        triggers {
+            vcs {
+                branchFilter = "+:*"
+            }
+        }
+
+        requirements {
+            contains("teamcity.agent.jvm.os.name", "Linux")
+            matches("teamcity.agent.hardware.cpuCount", "1,2,4")
+        }
 
         steps {
             script {
@@ -70,3 +89,12 @@ project {
         }
     }
 }
+
+object AppVcs : GitVcsRoot({
+    id("AppVcs")
+    name = "Application VCS Root"
+    url = "https://github.com/%vcsRootUrl%"
+    branch = "refs/heads/main"
+    branchSpec = "+:refs/heads/*"
+})
+
