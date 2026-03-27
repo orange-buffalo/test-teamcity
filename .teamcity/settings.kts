@@ -56,17 +56,17 @@ object MainBuild : BuildType({
     steps {
         script {
             name = "Install SDKMAN and Initialize JDK"
-            scriptContent = """
+            scriptContent = $$"""
                     #!/usr/bin/env bash
                     set -e
 
                     # Install SDKMAN if not already installed
-                    if [ ! -d "${'$'}HOME/.sdkman" ]; then
+                    if [ ! -d "$HOME/.sdkman" ]; then
                         curl -s "https://get.sdkman.io" | bash
                     fi
 
                     # Initialize SDKMAN
-                    source "${'$'}HOME/.sdkman/bin/sdkman-init.sh"
+                    source "$HOME/.sdkman/bin/sdkman-init.sh"
 
                     # Install and use Java 17
                     sdk install java 17.0.11-tem || true
@@ -78,12 +78,12 @@ object MainBuild : BuildType({
 
         script {
             name = "Run mvn install"
-            scriptContent = """
+            scriptContent = $$"""
                     #!/usr/bin/env bash
                     set -e
 
                     # Initialize SDKMAN and activate the installed JDK
-                    source "${'$'}HOME/.sdkman/bin/sdkman-init.sh"
+                    source "$HOME/.sdkman/bin/sdkman-init.sh"
                     sdk use java 17.0.11-tem
 
                     mvn install
