@@ -1,7 +1,9 @@
 import jetbrains.buildServer.configs.kotlin.BuildType
+import jetbrains.buildServer.configs.kotlin.DslContext
 import jetbrains.buildServer.configs.kotlin.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.project
 import jetbrains.buildServer.configs.kotlin.triggers.vcs
+import jetbrains.buildServer.configs.kotlin.ui.add
 import jetbrains.buildServer.configs.kotlin.version
 
 /*
@@ -35,6 +37,10 @@ project {
 object MainBuild : BuildType({
     id("build_new")
     name = "Build New"
+
+    vcs {
+        add(DslContext.settingsRoot.id!!)
+    }
 
     triggers {
         vcs {
