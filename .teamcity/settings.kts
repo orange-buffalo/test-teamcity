@@ -32,8 +32,8 @@ project {
     vcsRoot(AppVcs)
 
     buildType {
-        id("Build")
-        name = "Build"
+        id("build-new")
+        name = "Build New"
 
         vcs {
             root(AppVcs)
