@@ -29,8 +29,6 @@ version = "2025.11"
 
 project {
 
-    vcsRoot(AppVcs)
-
     buildType {
         id("build_new")
         name = "Build New"
